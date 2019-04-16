@@ -1,6 +1,6 @@
 import tcod
 import tcod.event
-from rect import Rect
+from window import Window
 
 tcod.console_set_custom_font(
     "arial10x10.png",
@@ -10,10 +10,10 @@ tcod.console_set_custom_font(
 class App:
     def __init__(self):
         self.root = tcod.console_init_root(80, 60, order="F")
-        self.rects = []
+        self.children = []
 
-    def make_rect(self, x0, y0, width, height):
-        result = Rect(x0, y0, width, height)
+    def make_window(self, x0, y0, width, height):
+        result = Window(x0, y0, width, height)
         result.app = self
-        self.rects.append(result)
+        self.children.append(result)
         return result

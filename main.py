@@ -2,7 +2,7 @@
 import tcod
 import tcod.event
 
-from rect import Rect
+from window import Window
 from app import App
 
 # Setup the font.
@@ -11,12 +11,12 @@ tcod.console_set_custom_font(
     tcod.FONT_LAYOUT_TCOD | tcod.FONT_TYPE_GREYSCALE,
 )
 
-def normalize_rect(points, app):
+def normalize_window(points, app):
     if points[1] < points[0]:
-        return app.make_rect(points[1][0], points[1][1],
+        return app.make_window(points[1][0], points[1][1],
                     points[0][0] - points[1][0], points[0][1] - points[1][1])
     else:
-        return app.make_rect(points[0][0], points[0][1],
+        return app.make_window(points[0][0], points[0][1],
                     points[1][0] - points[0][1], points[1][1] - points[0][1])
 
 global_points = []
@@ -36,8 +36,8 @@ while True:
         if event.type == "MOUSEBUTTONUP":
             print("ouch")
             global_points.append(event.tile)
-            normalize_rect(global_points, app)
+            normalize_window(global_points, app)
             global_points = []
-    for rect in app.rects:
-        rect.draw()
+    for item in app.children:
+        item.draw()
 
