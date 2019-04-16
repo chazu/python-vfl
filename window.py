@@ -7,5 +7,7 @@ class Window:
         self.h = h
 
     def draw(self):
-        print(self)
         self.app.root.print_frame(self.origin[0], self.origin[1], self.w, self.h)
+
+    def persist(self):
+        self.app.children.append(self)

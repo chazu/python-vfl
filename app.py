@@ -15,5 +15,4 @@ class App:
     def make_window(self, x0, y0, width, height):
         result = Window(x0, y0, width, height)
         result.app = self
-        self.children.append(result)
         return result
