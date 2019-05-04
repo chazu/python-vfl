@@ -7,14 +7,14 @@ GRAMMAR = Grammar(
     connection = ("-" predicateList "-") / "-"
     superview = "|"
     view = "[" viewName (predicateListWithParens)? "]"
-    predicateListWithParens = "("? predicate ("," predicate)* ")"?
+    predicateListWithParens = "(" predicate ("," predicate)* ")"
     predicateList = simplePredicate / predicateListWithParens
-    simplePredicate = number
     predicate = relation? objectOfPredicate ("@" priority)?
     objectOfPredicate = constant / viewName
+    simplePredicate = number
     priority = ~"[0-9]+"
     constant = number
-    number = ~"[\d]+\.[\d]+"
+    number = ~"[\d]+\.[\d]+" / ~"[\d]+"
     viewName = ~"[a-zA-Z]+[a-zA-Z0-9_]*"
     relation = ~"==|>=|<="
 
@@ -31,5 +31,5 @@ GRAMMAR = Grammar(
 
 # print(GRAMMAR.parse("|-[someview]-|"))
 # print(GRAMMAR.parse("[someView]"))
-print(GRAMMAR.parse("[button(>=50)]"))
+print(GRAMMAR.parse("H:|-[someView(>=50)]-|"))
 
