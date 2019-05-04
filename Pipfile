@@ -10,6 +10,11 @@ clubsandwich = "*"
 cassowary = "*"
 tcod = "*"
 nose = "*"
+js2py = "*"
+parsimonious = "*"
+tatsu = "*"
+lark-parser = "*"
+ply = "*"
 
 [requires]
 python_version = "3.7"
