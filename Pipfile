@@ -17,6 +17,7 @@ lark-parser = "*"
 ply = "*"
 pydb = "*"
 pudb = "*"
+pydash = "*"
 
 [requires]
 python_version = "3.7"

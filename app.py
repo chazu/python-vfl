@@ -7,6 +7,7 @@ tcod.console_set_custom_font(
     tcod.FONT_LAYOUT_TCOD | tcod.FONT_TYPE_GREYSCALE,
 )
 
+
 class App:
     def __init__(self):
         self.root = tcod.console_init_root(80, 60, order="F")
