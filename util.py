@@ -9,3 +9,10 @@ def normalize_window(points, app):
 def normalize_points(point0, point1):
     return [[min(point0[0], point1[0]), min(point0[1], point1[1])],
             [max(point0[0], point1[0]), max(point0[1], point1[1])]]
+
+def predicate_for_node_type(node_type):
+    """
+    Return a callable predicate which detects parse nodes of the given
+    type.
+    """
+    return lambda x: type(x) == dict and x['type'] == node_type
