@@ -15,5 +15,16 @@ class TestParser(unittest.TestCase):
     def test_program_collects_child_views(self):
         program = "[testView]"
         result = Parser.parse(program)
+        self.assertEqual(len(result.views), 1)
+
+    def test_view_has_view_name(self):
+        program = "[testView]"
+        result = Parser.parse(program)
 
         self.assertEqual(len(result.views), 1)
+        self.assertEqual(result.views[0].name, "testView")
+
+    def test_flush_views(self):
+        program = "[viewOne][viewTwo]"
+        result = Parser.parse(program)
+        self.assertEqual(len(result.views), 2)

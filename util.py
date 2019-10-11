@@ -1,3 +1,11 @@
+def flatten(container):
+    for i in container:
+        if isinstance(i, (list,tuple)):
+            for j in flatten(i):
+                yield j
+        else:
+            yield i
+
 def normalize_window(points, app):
     if points[1][0] < points[0][0]: # Q
         return app.make_window(points[1][0], points[1][1],
