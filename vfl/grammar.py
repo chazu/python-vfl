@@ -2,7 +2,7 @@ from parsimonious.grammar import Grammar
 
 VFL_GRAMMAR = Grammar(
     """
-    program = (orientation ":")? (superview connection)? view (connection view)* (connection superview)?
+    program = (orientation ":")? (superview connection)? view* (connection view)? (connection superview)?
     orientation = "H" / "V"
     connection = ("-" predicateList "-") / "-"
     superview = "|"
