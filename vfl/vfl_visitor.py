@@ -2,9 +2,18 @@ from vfl.program import Program
 from vfl.view import View
 from parsimonious.nodes import NodeVisitor
 
+def value_for_view_name(view_name_node, visited_children):
+    return {"type": "view_name",
+            "value": view_name_node.text
+    }
+
 node_to_class_map = {
     "program": Program,
-    "view": View,
+    "view": View
+}
+
+node_to_value_map = {
+    "viewName": value_for_view_name
 }
 
 class VFLVisitor(NodeVisitor):
@@ -27,6 +36,8 @@ class VFLVisitor(NodeVisitor):
     def generic_visit(self, node, visited_children):
         if node.expr_name in node_to_class_map.keys():
             return node_to_class_map[node.expr_name](node, visited_children)
+        elif node.expr_name in node_to_value_map.keys():
+            return node_to_value_map[node.expr_name](node, visited_children)
         else:
             return None
         #return { 'type': node.expr_name, 'value': node.text, 'children': visited_children }
