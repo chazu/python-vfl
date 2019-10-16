@@ -1,3 +1,4 @@
+from vfl.connection import Connection
 from vfl.program import Program
 from vfl.view import View
 from parsimonious.nodes import NodeVisitor
@@ -12,7 +13,8 @@ def value_for_view_name(view_name_node, visited_children):
 
 node_to_class_map = {
     "program": Program,
-    "view": View
+    "view": View,
+    "connection": Connection
 }
 
 node_to_value_map = {
