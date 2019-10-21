@@ -48,7 +48,3 @@ class TestParser(unittest.TestCase):
         # Expect order of children
         for idx, item in enumerate(expected):
             self.assertIsInstance(result.children[idx], expected[idx])
-
-
-        for view in result.views:
-            self.assertIsInstance(view.connections, list)
