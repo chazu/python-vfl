@@ -2,7 +2,8 @@ import unittest
 
 from vfl.parser import Parser
 from vfl.program import Program
-
+from vfl.view import View
+from vfl.connection import Connection
 
 class TestParser(unittest.TestCase):
 
@@ -16,6 +17,7 @@ class TestParser(unittest.TestCase):
         program = "[testView]"
         result = Parser.parse(program)
         self.assertEqual(len(result.views), 1)
+        self.assertEqual(len(result.children), 1)
 
     def test_view_has_view_name(self):
         program = "[testView]"
@@ -28,3 +30,21 @@ class TestParser(unittest.TestCase):
         program = "[viewOne][viewTwo]"
         result = Parser.parse(program)
         self.assertEqual(len(result.views), 2)
+        self.assertEqual(len(result.children), 2)
+
+    def test_standard_space(self):
+        program = "[viewOne]-[viewTwo]"
+        result = Parser.parse(program)
+
+        self.assertEqual(len(result.views), 2)
+        self.assertEqual(len(result.children), 3)
+
+        expected = [
+            View,
+            Connection,
+            View
+        ]
+
+        # Expect order of children
+        for idx, item in enumerate(expected):
+            self.assertIsInstance(result.children[idx], expected[idx])
