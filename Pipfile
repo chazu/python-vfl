@@ -10,13 +10,9 @@ clubsandwich = "*"
 cassowary = "*"
 tcod = "*"
 nose = "*"
-js2py = "*"
 parsimonious = "*"
 tatsu = "*"
-lark-parser = "*"
 ply = "*"
-pydb = "*"
-pudb = "*"
 pydash = "*"
 
 [requires]
