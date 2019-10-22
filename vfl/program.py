@@ -32,10 +32,14 @@ class Program:
         for view in self.views:
 
             if self._view_is_followed_by_connection(view):
-                view.following_connection = self._following_connection_for_view(view)
+                view.following_connection = self._following_child_for_element(view)
+                view.following_connection.preceding_view = view
+                view.following_connection.following_view = self._following_child_for_element(view.following_connection)
 
             if self._view_is_preceded_by_connection(view):
-                view.preceding_connection = self._preceding_connection_for_view(view)
+                view.preceding_connection = self._preceding_child_for_element(view)
+                view.preceding_connection.following_view = view
+                view.preceding_connection.preceding_view = self._preceding_child_for_element(view.preceding_connection)
 
     def _index_of_view(self, view):
         """Return the index of the view in the children of the program."""
@@ -55,10 +59,10 @@ class Program:
         return (index_of_view - 1 > 0 and
                 type(self.children[index_of_preceding_view]) == Connection)
 
-    def _following_connection_for_view(self, view):
+    def _following_child_for_element(self, view):
         index_of_view = self._index_of_view(view)
         return self.children[index_of_view + 1]
 
-    def _preceding_connection_for_view(self, view):
+    def _preceding_child_for_element(self, view):
         index_of_view = self._index_of_view(view)
         return self.children[index_of_view - 1]
