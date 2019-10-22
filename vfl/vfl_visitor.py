@@ -11,6 +11,9 @@ def value_for_view_name(view_name_node, visited_children):
             "value": view_name_node.text
     }
 
+def value_for_predicate_list_with_parens(node, visited_children):
+    import pdb; pdb.set_trace()
+
 node_to_class_map = {
     "program": Program,
     "view": View,
@@ -18,7 +21,8 @@ node_to_class_map = {
 }
 
 node_to_value_map = {
-    "viewName": value_for_view_name
+    "viewName": value_for_view_name,
+    "predicateListWithParens": value_for_predicate_list_with_parens
 }
 
 class VFLVisitor(NodeVisitor):

@@ -10,6 +10,7 @@ class View:
     def _get_name(self):
         try:
             # TODO This is gross AF
+
             return [x for x in self.children
                          if x and x['type'] == 'view_name'][0]['value']
         except StopIteration as e:
