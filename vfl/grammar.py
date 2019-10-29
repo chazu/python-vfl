@@ -10,10 +10,9 @@ VFL_GRAMMAR = Grammar(
     predicateListWithParens = "(" predicate ("," predicate)* ")"
     predicateList = simplePredicate / predicateListWithParens
     predicate = relation? objectOfPredicate ("@" priority)?
-    objectOfPredicate = constant / viewName
+    objectOfPredicate = number / viewName
     simplePredicate = number
     priority = ~"[0-9]+"
-    constant = number
     number = ~"[\d]+\.[\d]+" / ~"[\d]+"
     viewName = ~"[a-zA-Z]+[a-zA-Z0-9_]*"
     relation = ~"==|>=|<="

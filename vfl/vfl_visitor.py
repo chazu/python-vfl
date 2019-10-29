@@ -1,6 +1,7 @@
-# from vfl.connection import Connection
-# from vfl.program import Program
-# from vfl.view import View
+from vfl.connection import Connection
+from vfl.program import Program
+from vfl.view import View
+
 from parsimonious.nodes import NodeVisitor
 
 from util import flatten
@@ -23,29 +24,28 @@ class VFLVisitor(NodeVisitor):
 
     def visit_program(self, node, visited_children):
         """Returns the overall output."""
-        import pdb; pdb.set_trace()
+        return Program(list(flatten(visited_children)))
 
     def visit_orientation(self, node, visited_children):
-        pass
+        return node.text
 
     def visit_connection(self, node, visited_children):
-        pass
+        flattened = list(flatten(visited_children))
+        return Connection(visited_children)
 
     def visit_view(self, node, visited_children):
         flattened = list(flatten(visited_children))
-        import pdb; pdb.set_trace()
         rolled_up = roll_up_nested_types(flattened)
-        return {
-            "type": "view",
-            "value": rolled_up
-        }
-
+        return View(rolled_up)
 
     def visit_predicateListWithParens(self, node, visited_children):
         return list(flatten(visited_children))
 
     def visit_predicateList(self, node, visited_children):
-        import pdb; pdb.set_trace()
+        return {
+            "type": "predicateList",
+            "value": visited_children
+        }
 
     def visit_predicate(self, node, visited_children):
         flattened = list(flatten(visited_children))
@@ -63,16 +63,16 @@ class VFLVisitor(NodeVisitor):
         }
 
     def visit_simplePredicate(self, node, visited_children):
-        import pdb; pdb.set_trace()
+        return {
+            "type": "simplePredicate",
+            "value": visited_children[0]
+        }
 
     def visit_priority(self, node, visited_children):
         return {
             "type": "priority",
             "value": int(node.text)
         }
-
-    def visit_constant(self, node, visited_children):
-        return int(node.text)
 
     def visit_number(self, node, visited_children):
         return int(node.text)
