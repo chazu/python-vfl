@@ -5,10 +5,9 @@ from vfl.connection import Connection
 
 class Program:
 
-    def __init__(self, parse_node, children):
-        self._node = parse_node
-        self.children = [x for x in flatten(children) if x != []]
-        self.views = [c for c in flatten(self.children) if type(c) == View]
+    def __init__(self, children):
+        self.children = children
+        self.views = [c for c in self.children if type(c) == View]
 
         # Wire up connections and views
         self.initialize_connections()
