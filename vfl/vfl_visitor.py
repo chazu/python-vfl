@@ -39,7 +39,10 @@ class VFLVisitor(NodeVisitor):
         return View(rolled_up)
 
     def visit_predicateListWithParens(self, node, visited_children):
-        return list(flatten(visited_children))
+        return {
+            "type": "predicateList",
+            "value": list(flatten(visited_children))
+        }
 
     def visit_predicateList(self, node, visited_children):
         return {

@@ -15,5 +15,4 @@ class TestView(unittest.TestCase):
         test_view = result.get_view("testView")
         self.assertIsInstance(test_view, View)
 
-        self.assertEquals(test_view.width_constraint, 50)
-        self.assertEquals(test_view.width_constraint_operator, "=")
+        self.assertIsInstance(test_view.constraints, list)
