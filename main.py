@@ -21,7 +21,7 @@ app = App()
 
 while True:
     tcod.console_flush()  # Show the console.
-    tcod.console_clear(app.root)  # Show the console.    
+    tcod.console_clear(app.root)  # Show the console.
     for event in tcod.event.wait():
         if event.type == "QUIT":
             raise SystemExit()
@@ -31,11 +31,11 @@ while True:
         if event.type == "MOUSEBUTTONUP":
             # Create a proper window and persist it to app's children
             global_points.append(event.tile)
-            new_window_points = normalize_points(global_points[0], current_mouse_point)
-            new_window = app.make_window(new_window_points[0][0],
-                                         new_window_points[0][1],
-                                         new_window_points[1][0] - new_window_points[0][0],
-                                         new_window_points[1][1] - new_window_points[0][1])
+            win_points = normalize_points(global_points[0], current_mouse_point)
+            new_window = app.make_window(win_points[0][0],
+                                         win_points[0][1],
+                                         win_points[1][0] - win_points[0][0],
+                                         win_points[1][1] - win_points[0][1])
             new_window.persist()
 
             # Reset relevant state
@@ -49,10 +49,12 @@ while True:
 
     # draw the current tile if we're drawing
     if drawing and current_mouse_point:
-        window_points  = normalize_points(global_points[0], current_mouse_point)
-        current_window = app.make_window(window_points[0][0], window_points[0][1],
-                                        window_points[1][0] - window_points[0][0], window_points[1][1] - window_points[0][1])
-        current_window.draw()
-    
+        win_points  = normalize_points(global_points[0], current_mouse_point)
+        cur_window = app.make_window(win_points[0][0],
+                                     win_points[0][1],
+                                     win_points[1][0] - win_points[0][0],
+                                     win_points[1][1] - win_points[0][1])
+        cur_window.draw()
+
     # print the total number of widgets/rects/windows
     print(app.children)
