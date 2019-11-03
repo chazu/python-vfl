@@ -72,8 +72,11 @@ while True:
         item.draw()
 
     # draw the current tile if we're drawing
-    if drawing and context["current_mouse_point"]:
-        win_points  = normalize_points(context["global_points"][0], context["current_mouse_point"])
+    if (context["drawing"] and context["current_mouse_point"]
+        and context["global_points"]):
+
+        win_points  = normalize_points(context["global_points"][0],
+                                       context["current_mouse_point"])
         cur_window = app.make_window(win_points[0][0],
                                      win_points[0][1],
                                      win_points[1][0] - win_points[0][0],
