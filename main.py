@@ -22,7 +22,6 @@ context = {
 app = App()
 drawing = False
 
-
 def handle_quit(context, event):
     raise SystemExit()
 
@@ -37,7 +36,9 @@ def handle_mouse_move(context, event):
 def handle_mouse_up(context, event):
         # Create a proper window and persist it to app's children
         context["global_points"].append(event.tile)
-        win_points = normalize_points(context["global_points"][0], context["current_mouse_point"])
+        win_points = normalize_points(context["global_points"][0],
+                                      context["current_mouse_point"])
+
         new_window = app.make_window(win_points[0][0],
                                      win_points[0][1],
                                      win_points[1][0] - win_points[0][0],
@@ -82,6 +83,3 @@ while True:
                                      win_points[1][0] - win_points[0][0],
                                      win_points[1][1] - win_points[0][1])
         cur_window.draw()
-
-    # print the total number of widgets/rects/windows
-    print(app.children)
