@@ -92,5 +92,10 @@ class VFLVisitor(NodeVisitor):
             "value": relation_map[node.text]
         }
 
+    def visit_superview(self, node, visited_children):
+        return {
+            "type": "superview"
+        }
+
     def visit_(self, node, visited_children):
         return visited_children

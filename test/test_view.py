@@ -16,3 +16,6 @@ class TestView(unittest.TestCase):
         self.assertIsInstance(test_view, View)
 
         self.assertIsInstance(test_view.constraints, list)
+
+    def test_connection_to_superview(self):
+        program = "|-50-[purpleBox]-50-|"

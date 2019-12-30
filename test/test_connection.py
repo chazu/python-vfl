@@ -9,6 +9,10 @@ from vfl.connection import Connection
 
 class TestConnection(unittest.TestCase):
 
+    def test_empty_string_is_connection(self):
+        """TODO see docs - empty string counts"""
+        pass
+
     def test_basic_connection(self):
         program = "[viewOne]-[viewTwo]"
         result = Parser.parse(program)
@@ -41,3 +45,6 @@ class TestConnection(unittest.TestCase):
         self.assertIsInstance(connection.predicates, list)
         self.assertTrue(len(connection.predicates) == 1)
         self.assertIsInstance(connection.predicates[0], Predicate)
+
+
+    def test_connection_to_superview(self):

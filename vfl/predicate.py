@@ -1,3 +1,8 @@
+REFERENT_TYPES = {
+    "int": "CONSTANT",
+    "str": "VIEW_NAME"
+}
+
 class Predicate:
 
     __slots__ = (
@@ -16,6 +21,10 @@ class Predicate:
         self.referent_type = None
         self.value = self._init_value(predicate_value)
 
+
+    def _init_referent_type(self, predicate_value):
+        """Return the referent type - infer if necessary."""
+        return REFERENT_TYPES[type(predicate_value)]
 
     def _init_value(self, predicate_value):
         """Return the value for the 'value' slot."""
