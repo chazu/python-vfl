@@ -45,6 +45,3 @@ class TestConnection(unittest.TestCase):
         self.assertIsInstance(connection.predicates, list)
         self.assertTrue(len(connection.predicates) == 1)
         self.assertIsInstance(connection.predicates[0], Predicate)
-
-
-    def test_connection_to_superview(self):

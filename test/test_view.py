@@ -19,3 +19,19 @@ class TestView(unittest.TestCase):
 
     def test_connection_to_superview(self):
         program = "|-50-[purpleBox]-50-|"
+
+
+    def test_get_view(self):
+        program = "[testView][anotherView][yetAnotherView]"
+
+        result = Parser.parse(program)
+
+        expected_view_names = [
+            "testView",
+            "anotherView",
+            "yetAnotherView"
+        ]
+
+        for view_name in expected_view_names:
+            self.assertIsInstance(result.get_view(view_name), View)
+            self.assertEqual(result.get_view(view_name).name, view_name)

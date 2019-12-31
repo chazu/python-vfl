@@ -1,5 +1,4 @@
 from vfl.connection import Connection
-from vfl.program import Program
 from vfl.view import View
 
 from parsimonious.nodes import NodeVisitor
@@ -24,7 +23,7 @@ class VFLVisitor(NodeVisitor):
 
     def visit_program(self, node, visited_children):
         """Returns the overall output."""
-        return Program(list(flatten(visited_children)))
+        return View(list(flatten(visited_children)))
 
     def visit_orientation(self, node, visited_children):
         return node.text

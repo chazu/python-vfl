@@ -9,6 +9,11 @@ class Program:
         self.children = children
         self.views = [c for c in self.children if type(c) == View]
 
+        self.name = self._get_name()
+        self.preceding_connection = None
+        self.following_connection = None
+        self.constraints = self._get_constraints()
+
         # Wire up connections and views
         self.initialize_connections()
 
@@ -39,6 +44,17 @@ class Program:
                 view.preceding_connection = self._preceding_child_for_element(view)
                 view.preceding_connection.following_view = view
                 view.preceding_connection.preceding_view = self._preceding_child_for_element(view.preceding_connection)
+
+    def _get_constraints(self):
+        return (self.children.get("predicate", None) or
+                self.children.get("predicateList", None))
+
+    def _get_name(self):
+        try:
+            return self.children["name"]
+        except StopIteration as e:
+            print("ERR: View name not found, this should not be possibble")
+            return "anonymousView"
 
     def _index_of_view(self, view):
         """Return the index of the view in the children of the program."""

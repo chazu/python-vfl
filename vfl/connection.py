@@ -2,9 +2,6 @@ from util import flatten
 from vfl.predicate import Predicate
 from vfl.util import value_of_child_with_type
 
-from vfl.view import View
-
-
 class Connection:
 
     __slots__ = ('_node',
