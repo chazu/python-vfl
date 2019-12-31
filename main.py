@@ -17,7 +17,8 @@ tcod.console_set_custom_font(
 interaction_context = {
     "current_mouse_point": None,
     "drawing": False,
-    "global_points": []
+    "dragging": False,
+    "mousedown_point": None
 }
 
 # Initialize the root console in a context.
@@ -26,7 +27,7 @@ def handle_quit(context, event):
     raise SystemExit()
 
 def handle_mouse_down(context, event):
-    context["global_points"].append(event.tile)
+    context["mousedown_point"] = event.tile
     context["drawing"] = True
 
 def handle_mouse_move(context, event):
@@ -35,8 +36,7 @@ def handle_mouse_move(context, event):
 
 def handle_mouse_up(context, event):
         # Create a proper window and persist it to app's children
-    context["global_points"].append(event.tile)
-    win_points = normalize_points(context["global_points"][0],
+    win_points = normalize_points(context["mousedown_point"],
                                   context["current_mouse_point"])
 
     new_window = app.make_window(win_points[0][0],
@@ -46,9 +46,9 @@ def handle_mouse_up(context, event):
     new_window.persist()
 
     # Reset relevant state
-    context["global_points"] = []
+    context["mousedown_point"] = None
     context["current_mouse_point"] = None
-    drawing = False
+    context["drawing"] = False
 
 handler_map = {
     "QUIT": handle_quit,
@@ -75,10 +75,11 @@ while True:
         item.draw()
 
     # draw the current tile if we're drawing
-    if (interaction_context["drawing"] and interaction_context["current_mouse_point"]
-        and interaction_context["global_points"]):
+    if (interaction_context["drawing"] and
+        interaction_context["mousedown_point"] and
+        interaction_context["current_mouse_point"]):
 
-        win_points  = normalize_points(interaction_context["global_points"][0],
+        win_points  = normalize_points(interaction_context["mousedown_point"],
                                        interaction_context["current_mouse_point"])
         cur_window = app.make_window(win_points[0][0],
                                      win_points[0][1],
