@@ -29,9 +29,9 @@ def handle_quit(context, event):
 def handle_mouse_down(context, event):
     context["mousedown_point"] = event.tile
     context["drawing"] = True
+    context["current_mouse_point"] = event.tile
 
 def handle_mouse_move(context, event):
-    if context["drawing"]:
         context["current_mouse_point"] = event.tile
 
 def handle_mouse_up(context, event):
