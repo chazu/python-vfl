@@ -13,6 +13,15 @@ class App:
         self.root = tcod.console_init_root(80, 60, order="F")
         self.children = []
 
+    def register_window(self, window):
+        self.children = [window] + self.children
+
+
+    def move_window_to_top(self, window):
+        self.children.remove(window)
+        self.children = [window] + self.children
+
+
     def make_window(self, x0, y0, width, height):
         result = Window(x0, y0, width, height)
         result.app = self

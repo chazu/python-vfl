@@ -35,7 +35,7 @@ def handle_mouse_move(context, event):
         context["current_mouse_point"] = event.tile
 
 def handle_mouse_up(context, event):
-        # Create a proper window and persist it to app's children
+    # Create a proper window and persist it to app's children
     win_points = normalize_points(context["mousedown_point"],
                                   context["current_mouse_point"])
 
@@ -43,7 +43,7 @@ def handle_mouse_up(context, event):
                                  win_points[0][1],
                                  win_points[1][0] - win_points[0][0],
                                  win_points[1][1] - win_points[0][1])
-    new_window.persist()
+    app.register_window(new_window)
 
     # Reset relevant state
     context["mousedown_point"] = None
@@ -71,7 +71,7 @@ while True:
         except KeyError as e:
             print(f"unhandled event {e}")
 
-    for item in app.children:
+    for item in reversed(app.children):
         item.draw()
 
     # draw the current tile if we're drawing
