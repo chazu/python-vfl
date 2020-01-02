@@ -31,6 +31,7 @@ def handle_mouse_down(context, event):
     context["drawing"] = True
     context["current_mouse_point"] = event.tile
 
+    import pdb; pdb.set_trace()
 def handle_mouse_move(context, event):
         context["current_mouse_point"] = event.tile
 
@@ -38,6 +39,7 @@ def handle_mouse_up(context, event):
     # Create a proper window and persist it to app's children
     win_points = normalize_points(context["mousedown_point"],
                                   context["current_mouse_point"])
+
 
     new_window = app.make_window(win_points[0][0],
                                  win_points[0][1],

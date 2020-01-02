@@ -11,3 +11,7 @@ class Window:
 
     def persist(self):
         self.app.children.append(self)
+
+    def bbox(self):
+        return (self.origin[0], self.origin[1],
+                self.origin[0] + self.w, self.origin[1] + self.h)
