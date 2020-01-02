@@ -1,6 +1,6 @@
 import tcod
 import tcod.event
-from window import Window
+from jinxes.window import Window
 
 tcod.console_set_custom_font(
     "arial10x10.png",

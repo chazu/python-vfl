@@ -5,7 +5,7 @@ Make sure 'arial10x10.png' is in the same directory as this script.
 import tcod
 import tcod.event
 
-from app import App
+from jinxes.app import App
 from util import normalize_points
 
 # Setup the font
