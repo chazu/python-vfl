@@ -8,6 +8,10 @@ import tcod.event
 from jinxes.app import App
 from util import normalize_points
 
+MOUSE_FUNCTIONS = [
+    "DRAW",
+    "DRAG"
+]
 # Setup the font
 tcod.console_set_custom_font(
     "arial10x10.png",
@@ -16,41 +20,48 @@ tcod.console_set_custom_font(
 
 interaction_context = {
     "current_mouse_point": None,
-    "drawing": False,
-    "dragging": False,
+    "mouse_function": None,
     "mousedown_point": None
 }
 
 # Initialize the root console in a context.
+def mouse_function_for_event(app, event):
+    return "DRAG" if app.window_at_point(event.tile) else "DRAW"
+
 
 def handle_quit(context, event):
     raise SystemExit()
 
+
 def handle_mouse_down(context, event):
     context["mousedown_point"] = event.tile
-    context["drawing"] = True
+    context["mouse_function"] = mouse_function_for_event(context["app"], event)
     context["current_mouse_point"] = event.tile
 
-    import pdb; pdb.set_trace()
+    print(context)
+
 def handle_mouse_move(context, event):
         context["current_mouse_point"] = event.tile
 
+
 def handle_mouse_up(context, event):
-    # Create a proper window and persist it to app's children
-    win_points = normalize_points(context["mousedown_point"],
-                                  context["current_mouse_point"])
 
+    if context["mouse_function"] == "DRAW":
+        # Create a proper window and persist it to app's children
+        win_points = normalize_points(context["mousedown_point"],
+                                      context["current_mouse_point"])
 
-    new_window = app.make_window(win_points[0][0],
-                                 win_points[0][1],
-                                 win_points[1][0] - win_points[0][0],
-                                 win_points[1][1] - win_points[0][1])
-    app.register_window(new_window)
+        new_window = app.make_window(win_points[0][0],
+                                     win_points[0][1],
+                                     win_points[1][0] - win_points[0][0],
+                                     win_points[1][1] - win_points[0][1])
+        app.register_window(new_window)
 
     # Reset relevant state
     context["mousedown_point"] = None
     context["current_mouse_point"] = None
-    context["drawing"] = False
+    context["mouse_function"] = None
+
 
 handler_map = {
     "QUIT": handle_quit,
@@ -60,6 +71,7 @@ handler_map = {
 }
 
 app = App()
+interaction_context["app"] = app
 
 while True:
     tcod.console_flush()  # Show the console.
@@ -77,7 +89,7 @@ while True:
         item.draw()
 
     # draw the current tile if we're drawing
-    if (interaction_context["drawing"] and
+    if (interaction_context["mouse_function"] == "DRAW" and
         interaction_context["mousedown_point"] and
         interaction_context["current_mouse_point"]):
 

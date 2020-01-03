@@ -33,3 +33,7 @@ class App:
 
     def bbox(self):
         return (0, 0, self.columns, self.rows)
+
+    def window_at_point(self, point):
+        points =  self.quadtree.query_point(point)
+        return points[0] if any(points) else None
