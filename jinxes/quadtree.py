@@ -22,3 +22,6 @@ class Quadtree:
 
     def insert(self, obj, bbox):
         return self._quadtree.insert(obj, bbox)
+
+    def remove(self, obj, bbox):
+        return self._quadtree.remove(obj, bbox)

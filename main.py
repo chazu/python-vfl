@@ -1,7 +1,6 @@
 """
 Make sure 'arial10x10.png' is in the same directory as this script.
 """
-
 import tcod
 import tcod.event
 
@@ -29,6 +28,10 @@ interaction_context = {
 }
 
 def mouse_delta(context):
+    """
+    Return the change in mouse position, in terms of cells, since last move
+    event.
+    """
     if not context["previous_mouse_point"]:
         return (0, 0)
 
@@ -44,25 +47,37 @@ def mouse_function_for_event(app, event):
 
 
 def handle_quit(context, event):
+    """Quit the program."""
     raise SystemExit()
 
 
 def nonzero_mouse_delta(delta):
+    """Return true if mouse delta is nonzero in either X or Y"""
     try:
         return delta[0] != 0 or delta[1] != 0
     except KeyError:
         return False
 
 
+def debug_window_info(window):
+    print(f"X: {window.origin[0]} Y: {window.origin[1]} MaxX: "
+          f"{window.origin[0] + window.w} MaxY: {window.origin[1] + window.h}")
+
 def handle_mouse_down(context, event):
+    """Handler for mouse down events."""
+
     context["mousedown_point"] = event.tile
     context["mouse_function"] = mouse_function_for_event(context["app"], event)
     context["current_mouse_point"] = event.tile
 
     if context["mouse_function"] == "DRAG":
         context["selected_window"] = context["app"].top_window_at_point(event.tile)
+        debug_window_info(context["selected_window"])
+    print(context["current_mouse_point"])
+
 
 def handle_mouse_move(context, event):
+    """Handler for mouse move events."""
 
     if context["current_mouse_point"]:
         context["previous_mouse_point"] = (context["current_mouse_point"][0],
@@ -70,16 +85,15 @@ def handle_mouse_move(context, event):
     context["current_mouse_point"] = event.tile
     context["mouse_delta"] = mouse_delta(context)
 
-
-
-    # TODO If mouse_delta is non-zero and we're dragging, move the selected window to front and
-    # move its origin
-    if context["mouse_function"] == "DRAG" and nonzero_mouse_delta(context["mouse_delta"]):
-        context["selected_window"].origin[0] += context["mouse_delta"][0]
-        context["selected_window"].origin[1] += context["mouse_delta"][1]
+    if (context["mouse_function"] == "DRAG" and
+        nonzero_mouse_delta(context["mouse_delta"])):
+        context["app"].move_window(context["selected_window"],
+                                   context["mouse_delta"])
+        context["app"].move_window_to_top(context["selected_window"])
 
 
 def handle_mouse_up(context, event):
+    """Handler for mouse up events."""
 
     if context["mouse_function"] == "DRAW":
         # Create a proper window and persist it to app's children
@@ -109,12 +123,14 @@ handler_map = {
 app = App()
 interaction_context["app"] = app
 
+test_window = app.make_window(10, 10, 20, 20)
+app.register_window(test_window)
+
 while True:
     tcod.console_flush()  # Show the console.
     tcod.console_clear(app.root)  # Show the console.
 
     for event in tcod.event.wait():
-        print(event.type)
         try:
             handler = handler_map[event.type]
             handler(interaction_context, event)

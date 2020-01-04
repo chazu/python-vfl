@@ -24,9 +24,21 @@ class App:
         self.children = [window] + self.children
 
 
+    def deregister_window(self, window):
+        self.children.remove(window)
+        self.quadtree.remove(window, window.bbox())
+
+
     def move_window_to_top(self, window):
         self.children.remove(window)
         self.children = [window] + self.children
+
+
+    def move_window(self, window, delta):
+        self.deregister_window(window)
+        window.origin[0] += delta[0]
+        window.origin[1] += delta[1]
+        self.register_window(window)
 
 
     def make_window(self, x0, y0, width, height):
