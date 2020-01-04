@@ -19,18 +19,39 @@ tcod.console_set_custom_font(
 )
 
 interaction_context = {
+    "app": None,
     "current_mouse_point": None,
+    "previous_mouse_point": None,
+    "mouse_delta": None,
     "mouse_function": None,
-    "mousedown_point": None
+    "mousedown_point": None,
+    "selected_window": None
 }
 
-# Initialize the root console in a context.
+def mouse_delta(context):
+    if not context["previous_mouse_point"]:
+        return (0, 0)
+
+    delta_x = context["current_mouse_point"][0] - context["previous_mouse_point"][0]
+    delta_y = context["current_mouse_point"][1] - context["previous_mouse_point"][1]
+
+    return (delta_x, delta_y)
+
+
 def mouse_function_for_event(app, event):
-    return "DRAG" if app.window_at_point(event.tile) else "DRAW"
+    """Determine what dragging does based on window presence."""
+    return "DRAG" if app.windows_at_point(event.tile) else "DRAW"
 
 
 def handle_quit(context, event):
     raise SystemExit()
+
+
+def nonzero_mouse_delta(delta):
+    try:
+        return delta[0] != 0 or delta[1] != 0
+    except KeyError:
+        return False
 
 
 def handle_mouse_down(context, event):
@@ -38,10 +59,24 @@ def handle_mouse_down(context, event):
     context["mouse_function"] = mouse_function_for_event(context["app"], event)
     context["current_mouse_point"] = event.tile
 
-    print(context)
+    if context["mouse_function"] == "DRAG":
+        context["selected_window"] = context["app"].top_window_at_point(event.tile)
 
 def handle_mouse_move(context, event):
-        context["current_mouse_point"] = event.tile
+
+    if context["current_mouse_point"]:
+        context["previous_mouse_point"] = (context["current_mouse_point"][0],
+                                           context["current_mouse_point"][1])
+    context["current_mouse_point"] = event.tile
+    context["mouse_delta"] = mouse_delta(context)
+
+
+
+    # TODO If mouse_delta is non-zero and we're dragging, move the selected window to front and
+    # move its origin
+    if context["mouse_function"] == "DRAG" and nonzero_mouse_delta(context["mouse_delta"]):
+        context["selected_window"].origin[0] += context["mouse_delta"][0]
+        context["selected_window"].origin[1] += context["mouse_delta"][1]
 
 
 def handle_mouse_up(context, event):
@@ -57,11 +92,12 @@ def handle_mouse_up(context, event):
                                      win_points[1][1] - win_points[0][1])
         app.register_window(new_window)
 
+
     # Reset relevant state
     context["mousedown_point"] = None
-    context["current_mouse_point"] = None
     context["mouse_function"] = None
-
+    context["selected_window"] = None
+    context["mouse_delta"] = None
 
 handler_map = {
     "QUIT": handle_quit,

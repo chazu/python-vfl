@@ -14,12 +14,15 @@ class App:
         self.columns = columns
         self.rows = rows
         self.root = tcod.console_init_root(80, 60, order="F")
+        # 0 index in self.children is top window
         self.children = []
         self.quadtree = Quadtree(rows, columns)
+
 
     def register_window(self, window):
         self.quadtree.insert(window, window.bbox())
         self.children = [window] + self.children
+
 
     def move_window_to_top(self, window):
         self.children.remove(window)
@@ -31,9 +34,17 @@ class App:
         result.app = self
         return result
 
+
     def bbox(self):
         return (0, 0, self.columns, self.rows)
 
-    def window_at_point(self, point):
-        points =  self.quadtree.query_point(point)
-        return points[0] if any(points) else None
+
+    def windows_at_point(self, point):
+        return self.quadtree.query_point(point)
+
+
+    def top_window_at_point(self, point):
+        windows = self.windows_at_point(point)
+        with_index = [(self.children.index(x), x) for x in windows]
+        sorted_by_index = sorted(with_index)
+        return sorted_by_index[0][1]
