@@ -1,5 +1,6 @@
 import tcod
 import tcod.event
+
 from jinxes.quadtree import Quadtree
 from jinxes.window import Window
 
@@ -60,3 +61,31 @@ class App:
         with_index = [(self.children.index(x), x) for x in windows]
         sorted_by_index = sorted(with_index)
         return sorted_by_index[0][1]
+
+    def run(self, context):
+        while True:
+	    tcod.console_flush()  # Show the console.
+	    tcod.console_clear(self.root)  # Show the console.
+
+	    for event in tcod.event.wait():
+	        try:
+	            handler = handler_map[event.type]
+	            handler(context, event)
+	        except KeyError as e:
+	            print(f"unhandled event {e}")
+
+	    for item in reversed(app.children):
+	        item.draw()
+
+	    # draw the current tile if we're drawing
+	    if (context["mouse_function"] == "DRAW" and
+	        context["mousedown_point"] and
+	        context["current_mouse_point"]):
+
+	        win_points  = normalize_points(context["mousedown_point"],
+	                                       context["current_mouse_point"])
+	        cur_window = app.make_window(win_points[0][0],
+	                                     win_points[0][1],
+	                                     win_points[1][0] - win_points[0][0],
+	                                     win_points[1][1] - win_points[0][1])
+	        cur_window.draw()
