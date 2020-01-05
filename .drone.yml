@@ -1,0 +1,14 @@
+---
+kind: pipeline
+type: docker
+name: test-python-vfl
+
+steps:
+- name: install deps
+  image: python:3.7.3
+  commands:
+  - pip install -f requirements.txt
+- name: run tests
+  image: python:3.7.3
+  commands:
+  - nosetests
