@@ -7,7 +7,7 @@ steps:
 - name: install_deps
   image: python:3.7.3
   commands:
-  - apt install libsdl2-dev
+  - apt update-cache && apt install -y libsdl2-dev
   - pip install -r requirements.txt
 - name: run_tests
   image: python:3.7.3
