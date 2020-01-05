@@ -12,4 +12,4 @@ steps:
 - name: run_tests
   image: python:3.7.3
   commands:
-  - echo "jajajajajaja"
+  - python -m unittest
