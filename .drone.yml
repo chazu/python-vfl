@@ -1,0 +1,15 @@
+---
+kind: pipeline
+type: docker
+name: test-python-vfl
+
+steps:
+- name: install_deps
+  image: python:3.7.3
+  commands:
+  - apt update && apt install -y libsdl2-dev
+  - pip install -r requirements.txt
+- name: run_tests
+  image: python:3.7.3
+  commands:
+  - echo "jajajajajaja"

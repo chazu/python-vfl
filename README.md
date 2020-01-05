@@ -1,6 +1,8 @@
 # View Builder - Playing with libtcod and python
 
-Goal - make a constraint-based TUI editor for TUI apps.
+[![Build Status](https://drone.itscoming.run/api/badges/chazu/python-vfl/status.svg?ref=refs/heads/master)](https://drone.itscoming.run/chazu/python-vfl)
+
+Goal - make a constraint-based TUI editor for TUI apps. Also a bunch of other crap lives in here for now. Oops.
 
 ## TODO
  - Write parser for Extended VFL
