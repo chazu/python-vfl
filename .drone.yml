@@ -4,11 +4,11 @@ type: docker
 name: test-python-vfl
 
 steps:
-- name: install deps
+- name: install_deps
   image: python:3.7.3
   commands:
   - pip install -f requirements.txt
-- name: run tests
+- name: run_tests
   image: python:3.7.3
   commands:
   - nosetests
