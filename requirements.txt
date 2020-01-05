@@ -1,6 +1,6 @@
 cassowary==0.5.1
 cffi==1.13.2
-colander==0.9.9
+colander==1.7.0
 iso8601==0.1.8
 itsdangerous==1.1.0
 Jinja2==2.10.1
