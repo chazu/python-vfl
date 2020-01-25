@@ -23,7 +23,6 @@ class TestView(unittest.TestCase):
 
     def test_get_view(self):
         program = "[testView][anotherView][yetAnotherView]"
-
         result = Parser.parse(program)
 
         expected_view_names = [
@@ -35,3 +34,17 @@ class TestView(unittest.TestCase):
         for view_name in expected_view_names:
             self.assertIsInstance(result.get_view(view_name), View)
             self.assertEqual(result.get_view(view_name).name, view_name)
+
+    def test_view_left_margin_zero(self):
+        program = "[testView]"
+        result = Parser.parse(program)
+
+        test_view = result.get_view("testView")
+        self.assertEqual(test_view.left_margin, 0)
+
+    def test_view_left_margin_ten(self):
+        program = "|-10-[testView]-|"
+        result = Parser.parse(program)
+        import pdb; pdb.set_trace()
+        test_view = result.get_view("testView")
+        self.assertEqual(test_view.left_margin, 10)

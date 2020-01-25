@@ -35,11 +35,12 @@ class View:
         return len([x for x in self.children
                     if isinstance(x, dict) and x.get("type") == 'superview'])
 
-    # TODO Write unit tests for this
+    @property
     def left_margin(self):
-        pass
+        return self.preceding_connection.predicates
 
     # TODO Write unit tests for this
+    @property
     def right_margin(self):
         pass
 

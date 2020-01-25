@@ -20,15 +20,15 @@ class Predicate:
         self.priority = None
         self.referent_type = None
         self.value = self._init_value(predicate_value)
-
+        import pdb; pdb.set_trace()
 
     def _init_referent_type(self, predicate_value):
         """Return the referent type - infer if necessary."""
-        return REFERENT_TYPES[type(predicate_value)]
+        return "CONSTANT" if isinstance(predicate_value, int) else "VIEW_NAME"
 
     def _init_value(self, predicate_value):
         """Return the value for the 'value' slot."""
-        if type(predicate_value) == 'int':
+        if isinstance(predicate_value, int):
             return predicate_value
         else:
             return None
