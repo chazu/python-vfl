@@ -7,9 +7,9 @@ steps:
 - name: install_deps
   image: python:3.7.3
   commands:
-  - apt-get update && apt install -y libsdl2-dev
+  - apt-get update && apt install -y libsdl2-dev pipenv
   - pip install -r requirements.txt
 - name: run_tests
   image: python:3.7.3
   commands:
-  - python -m unittest
+  - python -m unittest test/*.py

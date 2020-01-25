@@ -35,10 +35,17 @@ class View:
         return len([x for x in self.children
                     if isinstance(x, dict) and x.get("type") == 'superview'])
 
+    # TODO Write unit tests for this
+    def left_margin(self):
+        pass
+
+    # TODO Write unit tests for this
+    def right_margin(self):
+        pass
+
     def _initialize_orientation(self):
         return "H"
 
-    # TODO This should be private
     def _initialize_connections(self):
         """ This method is responsible for populating relationships between
         views contained within this program and connections contained within
