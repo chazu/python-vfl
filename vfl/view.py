@@ -7,6 +7,7 @@ class View:
                  'constraints',
                  'following_connection',
                  'name',
+                 'orientation',
                  'preceding_connection',
                  'views'
 )
@@ -24,17 +25,28 @@ class View:
             self.constraints = self._get_constraints()
         else:
             self.name = "toplevel"
+            self.constraints = None
 
         # Wire up connections and views
-        self.initialize_connections()
+        self._initialize_connections()
 
     def has_superview(self):
         """Return true if this view/program has a connection to a superview"""
         return len([x for x in self.children
                     if isinstance(x, dict) and x.get("type") == 'superview'])
 
-    # TODO This should be private
-    def initialize_connections(self):
+    # TODO Write unit tests for this
+    def left_margin(self):
+        pass
+
+    # TODO Write unit tests for this
+    def right_margin(self):
+        pass
+
+    def _initialize_orientation(self):
+        return "H"
+
+    def _initialize_connections(self):
         """ This method is responsible for populating relationships between
         views contained within this program and connections contained within
         this program.
@@ -54,7 +66,6 @@ class View:
                 view.preceding_connection.following_view = view
                 view.preceding_connection.preceding_view = self._preceding_child_for_element(view.preceding_connection)
 
-
     def get_view(self, view_name):
         """Return a child view matching the name passed in."""
 
@@ -62,7 +73,6 @@ class View:
         index_of_target_view = view_names.index(view_name)
 
         return self.views[index_of_target_view]
-
 
     def _is_top_level(self):
         return isinstance(self.children, list)

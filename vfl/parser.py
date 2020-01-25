@@ -1,7 +1,5 @@
 from vfl.grammar import VFL_GRAMMAR
 from vfl.vfl_visitor import VFLVisitor
-from pydash import flatten
-
 
 
 class Parser:
