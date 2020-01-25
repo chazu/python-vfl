@@ -9,11 +9,11 @@ class App:
         self.rows = 50
 
 
-
 class ViewSolver:
 
-    def __init__(self, app):
+    def __init__(self, view, app):
         self.app = app
+        self.view = view
 
         self.left_side = Var("left_side")
         self.right_side = Var("right_side")
@@ -31,10 +31,8 @@ class ViewSolver:
         for c in self.constraints:
             self._solver.addConstraint(c)
 
+        self._solver.updateVariables()
 
-app = App()
-
-solver = ViewSolver(app)
-solver._solver.updateVariables()
-
-import pdb; pdb.set_trace()
+    def repr(self):
+        return (f"[[{self.left_side.value()},{self.top.value()}],"
+                f"[{self.right_side.value()},{self.bottom.value()}]]")
