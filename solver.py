@@ -1,5 +1,29 @@
 from kiwisolver import (Variable as Var,
                         Solver)
+VARIABLES = {}
+
+def var_name_for_view_var(view, var_name):
+    """Return the string which would be used for the view-specific var.
+
+    For example for the left side of view "quux":
+
+    >>> variable_for_view(v, "left_side")
+    >>> "quux_left_side"
+    """
+
+    return f"{view.name}_{var_name}"
+
+
+def get_var(view, var_name):
+    """Given a var name, get it from the collection of vars or create it and
+    add it to the dict.
+    """
+    full_var_name = var_name_for_view_var(view, var_name)
+
+    if full_var_name not in VARIABLES:
+        VARIABLES[full_var_name] = Var(full_var_name)
+
+    return VARIABLES[full_var_name]
 
 
 def constraints_for_connection(connection):
@@ -13,12 +37,20 @@ def constraints_for_connection(connection):
     # If view is horizontal
     ##
     result = []
+    first_view = connection.preceding_view
+    first_view.left_side = get_var(first_view, "left_side")
+    first_view.right_side = get_var(first_view, "right_side")
 
-    import pdb; pdb.set_trace()
+    second_view = connection.following_view
+    second_view.left_side = get_var(second_view, "left_side")
+    second_view.right_side = get_var(second_view, "right_side")
+
+
+    # Implicit connections have no pedicates
     if connection.implicit:
-
-    for p in connection.predicates:
-        pass
+        print("TOOOOO DOOOOO")
+    else:
+        raise "REE We're not handling explicit connections yet"
 
 
 class App:

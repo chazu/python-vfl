@@ -59,6 +59,8 @@ class View:
         """
         for view in self.views:
 
+            # TODO Handle case where view is preceded or followed by
+            # the superview (explicitly or implicitly)
             if self._view_is_followed_by_connection(view):
                 view.following_connection = self._following_child_for_element(view)
                 view.following_connection.preceding_view = view
