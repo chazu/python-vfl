@@ -2,6 +2,25 @@ from kiwisolver import (Variable as Var,
                         Solver)
 
 
+def constraints_for_connection(connection):
+    # For a connection between two things in a horizontal layout
+    # the right side of the preceding view plus the predicate value
+    # equals the left side of the following view. also the left side of the following
+    # view minus the predicate value equals the right side of the preceding view
+    #
+    # For a vertical layout, similar but following is below the preceding.
+
+    # If view is horizontal
+    ##
+    result = []
+
+    import pdb; pdb.set_trace()
+    if connection.implicit:
+
+    for p in connection.predicates:
+        pass
+
+
 class App:
 
     def __init__(self):
@@ -27,6 +46,11 @@ class ViewSolver:
             self.right_side == self.app.columns,
             self.bottom == self.app.rows,
         ]
+
+        for view in self.view.views:
+            view_constraints = [constraints_for_connection(x)
+                            for x in view.connections]
+            import pdb; pdb.set_trace()
 
         for c in self.constraints:
             self._solver.addConstraint(c)

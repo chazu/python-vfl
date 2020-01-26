@@ -18,6 +18,7 @@ class View:
 
         self.preceding_connection = None
         self.following_connection = None
+        self._initialize_connections()
         self.orientation = self._initialize_orientation()
 
         if not self._is_top_level():
@@ -27,13 +28,15 @@ class View:
             self.name = "toplevel"
             self.constraints = None
 
-        # Wire up connections and views
-        self._initialize_connections()
-
     def has_superview(self):
         """Return true if this view/program has a connection to a superview"""
         return len([x for x in self.children
                     if isinstance(x, dict) and x.get("type") == 'superview'])
+
+    @property
+    def connections(self):
+        """Return all connections that this view has."""
+        return list(filter(None, [self.preceding_connection, self.following_connection]))
 
     @property
     def left_margin(self):
@@ -49,8 +52,7 @@ class View:
 
     def _initialize_connections(self):
         """ This method is responsible for populating relationships between
-        views contained within this program and connections contained within
-        this program.
+        views contained within this view.
 
         [view]-[anotherView]
         |-[view]-[anotherView]-[yetAnotherView]-|
@@ -66,6 +68,16 @@ class View:
                 view.preceding_connection = self._preceding_child_for_element(view)
                 view.preceding_connection.following_view = view
                 view.preceding_connection.preceding_view = self._preceding_child_for_element(view.preceding_connection)
+
+            if self._view_is_followed_by_view(view):
+                view.following_connection = Connection()
+                view.following_connection.preceding_view = view
+                view.following_connection.following_view = self._following_child_for_element(view)
+
+            if self._view_is_preceded_by_view(view):
+                view.preceding_connection = Connection()
+                view.preceding_connection.following_view = view
+                view.preceding_connection.preceding_view = self._preceding_child_for_element(view)
 
     def get_view(self, view_name):
         """Return a child view matching the name passed in."""
@@ -107,10 +119,40 @@ class View:
         return (index_of_view - 1 > 0 and
                 type(self.children[index_of_preceding_view]) == Connection)
 
+    def _view_is_followed_by_view(self, view):
+        index_of_view = self._index_of_view(view)
+        index_of_following_view = index_of_view + 1
+
+        return (index_of_view + 1 < len(self.children) and
+                type(self.children[index_of_following_view]) == View)
+
+    def _view_is_preceded_by_view(self, view):
+        index_of_view = self._index_of_view(view)
+        index_of_preceding_view = index_of_view - 1
+
+        return (index_of_view - 1 > 0 and
+                type(self.children[index_of_preceding_view]) == View)
+
+    def _view_is_preceded_by_connection_or_view(self, view):
+        return (self._view_is_preceded_by_view(view) or
+                self._view_is_preceded_by_connection(view))
+
+    def _view_is_followed_by_connection_or_view(self, view):
+        return (self._view_is_followed_by_view(view) or
+                self._view_is_followed_by_connection(view))
+
     def _following_child_for_element(self, view):
+        """Return the view following the view passed in. Used for initializing
+        connections.
+        """
+
         index_of_view = self._index_of_view(view)
         return self.children[index_of_view + 1]
 
     def _preceding_child_for_element(self, view):
+        """Return the view preceding the view passed in. Used for initializing
+        connections.
+        """
+
         index_of_view = self._index_of_view(view)
         return self.children[index_of_view - 1]

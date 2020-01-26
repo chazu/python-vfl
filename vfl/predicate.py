@@ -18,9 +18,8 @@ class Predicate:
         self.relation = None
         self.referent = None
         self.priority = None
-        self.referent_type = None
+        self.referent_type = self._init_referent_type(predicate_value)
         self.value = self._init_value(predicate_value)
-        import pdb; pdb.set_trace()
 
     def _init_referent_type(self, predicate_value):
         """Return the referent type - infer if necessary."""
