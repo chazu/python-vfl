@@ -6,8 +6,7 @@ import tcod
 import tcod.event
 
 # First-Party Imports
-from jinxes.app import App
-from solver import ViewSolver
+from layout.viewsolver import ViewSolver
 from vfl.parser import Parser
 
 
@@ -26,12 +25,10 @@ handler_map = {
     "QUIT": handle_quit,
 }
 
-app = App()
-
 program = "[view][lol]"
 parsed = Parser.parse(program)
 
-viewsolver = ViewSolver(parsed, app)
+viewsolver = ViewSolver(parsed, 50, 50)
 
 # while True:
 #     tcod.console_flush()  # Show the console.
