@@ -54,13 +54,10 @@ class View:
         """ This method is responsible for populating relationships between
         views contained within this view.
 
-        [view]-[anotherView]
-        |-[view]-[anotherView]-[yetAnotherView]-|
+        TODO: Yes, the implementation here is evaxephon-tier garbage. Its fine
+        for now.
         """
         for view in self.views:
-
-            # TODO Handle case where view is preceded or followed by
-            # the superview (explicitly or implicitly)
             if self._view_is_followed_by_connection(view):
                 view.following_connection = self._following_child_for_element(view)
                 view.following_connection.preceding_view = view
@@ -80,6 +77,17 @@ class View:
                 view.preceding_connection = Connection()
                 view.preceding_connection.following_view = view
                 view.preceding_connection.preceding_view = self._preceding_child_for_element(view)
+
+            if not self._view_is_preceded_by_connection_or_view(view):
+                view.preceding_connection = Connection()
+                view.preceding_connection.following_view = view
+                view.preceding_connection.preceding_view = self
+
+            if not self._view_is_followed_by_connection_or_view(view):
+                view.following_connection = Connection()
+                view.following_connection.preceding_view = self
+                view.following_connection.following_view = view
+
 
     def get_view(self, view_name):
         """Return a child view matching the name passed in."""

@@ -45,9 +45,12 @@ class TestView(unittest.TestCase):
     # TODO assert that the connection between testView and superview is
     # implicit - no hyphen needed
     def test_view_implicit_connection_to_superview(self):
-        program = "|-10-[testView]|"
+        program = "[testView]"
+        result = Parser.parse(program)
 
-
+        view = result.get_view("testView")
+        self.assertIsInstance(view.preceding_connection, Connection)
+        self.assertIsInstance(view.following_connection, Connection)
     # def test_view_left_margin_zero(self):
     #     program = "[testView]"
     #     result = Parser.parse(program)

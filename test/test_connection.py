@@ -26,9 +26,10 @@ class TestConnection(unittest.TestCase):
         # view instances
         self.assertEqual(connection, result.views[1].preceding_connection)
 
-        # Assert that theres no connections where there shouldn't be
-        self.assertIsNone(view_one.preceding_connection)
-        self.assertIsNone(view_two.following_connection)
+        # Assert that implicit connections (reified at init time, not specified
+        # as part of program) are properly initialized as implicit
+        self.assertTrue(view_one.preceding_connection.implicit)
+        self.assertTrue(view_two.following_connection.implicit)
 
         self.assertIsInstance(view_one.following_connection, Connection)
         self.assertIsInstance(view_two.preceding_connection, Connection)
